@@ -1,7 +1,10 @@
 
 let employees = [];
+
+let employee = {};
 $('.darken').hide();
 $('.modal').hide();
+
 
 $.ajax({
   url: 'https://randomuser.me/api/?results=12&nat=us',
@@ -19,22 +22,11 @@ $.ajax({
     });// end .each
           $('.container').html(userhtml);
     $('.item').click(function(){
-      let employeeId = this.getAttribute('id'); //store value of click event "ID"
+      let employeeId = parseInt(this.getAttribute('id')); //store value of click event "ID"
       let employee = employees[employeeId]; //user ID is index for employees array
-      let employeehtml = ''; //begin html string to inject into modal window
-          employeehtml += '<a class="prev"></a>';
-          employeehtml += '<a class="next"></a>';
-          employeehtml += '<img class="modal-img" src ="'+employee.picture.large+'">';
-          employeehtml += '<p class="name"> '+capFirst(employee.name.first)+' '+ capFirst(employee.name.last)+'</p>';
-          employeehtml += '<p class="email">'+employee.login.username+'</p>';
-          employeehtml += '<p class="email">'+employee.email+'</p>';
-          employeehtml += '<hr/>';
-          employeehtml += '<p class="email">'+employee.cell+'</p>';
-          employeehtml += '<p class="email">'+capFirst(employee.location.street)+' '+capFirst(employee.location.city)+' , '+employee.location.state.toUpperCase()+' '+employee.location.postcode+' </p>';
-          employeehtml += '<p class="email">Birthday: '+formatDate(new Date(employee.dob))+'</p>';
-          $('.modal').html(employeehtml);
-          $('.modal').show();
-          $('.darken').show();
+      buildModal(employee, employeeId);
+
+
     });//end click
   }// end callback
 }); //end ajax
@@ -42,6 +34,43 @@ $('.darken').click(function(){ //area outside modal closes modal
   $('.darken').hide();
   $('.modal').hide();
 });
+
+function switchModal(employee, employeeId){
+  $('.prev').click(function(){
+    employeeId -= 1;
+    employee = employees[employeeId];
+    $('.modal').hide();
+    buildModal(employee, employeeId);
+  }); // end prev
+  $('.next').click(function(){
+    console.log(employeeId);
+    employeeId += 1;
+    employee = employees[employeeId];
+    console.log(employeeId);
+    console.log(employee);
+    $('.modal').hide();
+    buildModal(employee, employeeId);
+  }); // end prev
+}
+
+// build modal with parameter employee
+function buildModal(employee, employeeId){
+  let employeehtml = ''; //begin html string to inject into modal window
+      employeehtml += '<a class="prev"></a>';
+      employeehtml += '<a class="next"></a>';
+      employeehtml += '<img class="modal-img" src ="'+employee.picture.large+'">';
+      employeehtml += '<p class="name"> '+capFirst(employee.name.first)+' '+ capFirst(employee.name.last)+'</p>';
+      employeehtml += '<p class="email">'+employee.login.username+'</p>';
+      employeehtml += '<p class="email">'+employee.email+'</p>';
+      employeehtml += '<hr/>';
+      employeehtml += '<p class="email">'+employee.cell+'</p>';
+      employeehtml += '<p class="email">'+capFirst(employee.location.street)+' '+capFirst(employee.location.city)+' , '+employee.location.state.toUpperCase()+' '+employee.location.postcode+' </p>';
+      employeehtml += '<p class="email">Birthday: '+formatDate(new Date(employee.dob))+'</p>';
+      $('.modal').html(employeehtml);
+      $('.modal').show();
+      $('.darken').show();
+      switchModal(employee, employeeId);
+};//end buildModal
 
 function capFirst(str){ //capitalize the first letter in strings for cities, names, and streets
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
