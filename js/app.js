@@ -10,7 +10,7 @@ $.ajax({
     employees = data.results;
     let userhtml = '';
     $.each(employees, function(i, user){
-          userhtml += '<div class="item" id="'+i+'">';
+          userhtml += '<div class="item" id="'+i+'">'; //give each employee unique ID number to use in modal window
           userhtml += '<img class="img" src = "'+user.picture.medium+'"">';
           userhtml += '<p class="name"> '+capFirst(user.name.first)+' '+ capFirst(user.name.last)+'</p>';
           userhtml += '<p class="email">'+user.email+'</p>';
@@ -19,11 +19,11 @@ $.ajax({
     });// end .each
           $('.container').html(userhtml);
     $('.item').click(function(){
-      let employeeId = this.getAttribute('id');
-      let employee = employees[employeeId];
-      let date = employee.dob;
-      date = new Date(date);
-      let employeehtml = '';
+      let employeeId = this.getAttribute('id'); //store value of click event "ID"
+      let employee = employees[employeeId]; //user ID is index for employees array
+      let employeehtml = ''; //begin html string to inject into modal window
+          employeehtml += '<a class="prev"></a>';
+          employeehtml += '<a class="next"></a>';
           employeehtml += '<img class="modal-img" src ="'+employee.picture.large+'">';
           employeehtml += '<p class="name"> '+capFirst(employee.name.first)+' '+ capFirst(employee.name.last)+'</p>';
           employeehtml += '<p class="email">'+employee.login.username+'</p>';
@@ -31,14 +31,14 @@ $.ajax({
           employeehtml += '<hr/>';
           employeehtml += '<p class="email">'+employee.cell+'</p>';
           employeehtml += '<p class="email">'+capFirst(employee.location.street)+' '+capFirst(employee.location.city)+' , '+employee.location.state.toUpperCase()+' '+employee.location.postcode+' </p>';
-          employeehtml += '<p class="email">Birthday: '+formatDate(date)+'</p>';
+          employeehtml += '<p class="email">Birthday: '+formatDate(new Date(employee.dob))+'</p>';
           $('.modal').html(employeehtml);
           $('.modal').show();
           $('.darken').show();
     });//end click
   }// end callback
 }); //end ajax
-$('.darken').click(function(){
+$('.darken').click(function(){ //area outside modal closes modal
   $('.darken').hide();
   $('.modal').hide();
 });
@@ -54,10 +54,10 @@ function formatDate(value){ //format birthdate
 //search
 
 $('input').keyup(function(){
-  let input = this.value.toLowerCase();
+  let input = this.value.toLowerCase(); //store value of user search input
   $.each($('.item'),function(i, user){
-    let itemName = $(user).children('.name').text().toLowerCase();
-    if (itemName.includes(input)){
+    let itemName = $(user).children('.name').text().toLowerCase(); //store value insude class "name" for each user
+    if (itemName.includes(input)){ //compare input string userName
       $(user).show();
     } else {$(user).hide()};
   }); //end .each

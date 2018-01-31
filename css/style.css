@@ -142,3 +142,20 @@ form.example::after {
   clear: both;
   display: table;
 }
+
+.prev {
+  width: 24%;
+  left: 0;
+  float: left;
+  background: url(../images/prev.png) left 48% no-repeat;
+  cursor:pointer;
+  height: 100%;
+}
+.next {
+  width: 24%;
+  right: 0;
+  float: right;
+  background: url(../images/next.png) right 48% no-repeat;
+  cursor:pointer;
+  height: 100%;
+}
