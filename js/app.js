@@ -1,9 +1,7 @@
 
-let employees = [];
-
-let employee = {};
 $('.darken').hide();
 $('.modal').hide();
+let length = 0;
 
 
 $.ajax({
@@ -11,6 +9,8 @@ $.ajax({
   dataType: 'json',
   success: function(data) {
     employees = data.results;
+    length = employees.length;
+    length -= 1;
     let userhtml = '';
     $.each(employees, function(i, user){
           userhtml += '<div class="item" id="'+i+'">'; //give each employee unique ID number to use in modal window
@@ -36,18 +36,29 @@ $('.darken').click(function(){ //area outside modal closes modal
 });
 
 function switchModal(employee, employeeId){
+  if (employeeId === 0){ //if at user index 0 hide prev button
+    $('.prev').css('opacity', '0');
+  }
+  if (employeeId === length){ //if at user index 11 hide next button
+    $('.next').css('opacity', '0');
+  }
   $('.prev').click(function(){
+    if (employeeId === 0){ //if user clicks "hiden" prev button hide modal and darken
+      $('.modal').hide();
+      $('.darken').hide();
+    };
     employeeId -= 1;
     employee = employees[employeeId];
     $('.modal').hide();
     buildModal(employee, employeeId);
   }); // end prev
   $('.next').click(function(){
-    console.log(employeeId);
+    if (employeeId === length){ //if user clicks "hiden" next button hide modal and darken
+      $('.modal').hide();
+      $('.darken').hide();
+    };
     employeeId += 1;
     employee = employees[employeeId];
-    console.log(employeeId);
-    console.log(employee);
     $('.modal').hide();
     buildModal(employee, employeeId);
   }); // end prev
