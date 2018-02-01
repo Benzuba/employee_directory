@@ -1,7 +1,7 @@
 
 $('.darken').hide();
 $('.modal').hide();
-let length = 0;
+let length = 0; //set global variable for lenght of employees to use in control of scrolling
 
 
 $.ajax({
@@ -19,11 +19,11 @@ $.ajax({
           userhtml += '<p class="email">'+user.email+'</p>';
           userhtml += '<p class="city">'+capFirst(user.location.city)+'</p>';
           userhtml += '</div>';
-    });// end .each
+    });
           $('.container').html(userhtml);
     $('.item').click(function(){
       let employeeId = parseInt(this.getAttribute('id')); //store value of click event "ID"
-      let employee = employees[employeeId]; //user ID is index for employees array
+      let employee = employees[employeeId]; //employee ID is index for employees array
       buildModal(employee, employeeId);
 
 
@@ -91,7 +91,7 @@ function formatDate(value){ //format birthdate
    return value.getMonth()+1 + "/" + value.getDate() + "/" + value.getYear();
 }
 
-//search
+//
 
 $('input').keyup(function(){
   let input = this.value.toLowerCase(); //store value of user search input
